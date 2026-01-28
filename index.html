@@ -8,24 +8,109 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap');
-        body { background-color: #f8fafc; font-family: 'Quicksand', sans-serif; }
-        .card { background: white; border-radius: 24px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05); }
-        .input-label { font-size: 11px; font-weight: 700; text-transform: uppercase; margin-left: 4px; margin-bottom: 6px; display: block; letter-spacing: 0.5px; }
-        .input-field { width: 100%; padding: 12px 16px; background-color: #f1f5f9; border-radius: 12px; outline: none; border: 2px solid transparent; font-weight: 600; }
-        .input-field:focus { border-color: #e2e8f0; background-color: #fff; }
-        .btn-control { color: white; width: 32px; height: 32px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: bold; border: none; cursor: pointer; }
+        
+        body {
+            background-color: #f3f4f6;
+            font-family: 'Quicksand', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        .card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+        .btn-control {
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
         .btn-plus { background-color: #10b981; }
         .btn-minus { background-color: #f43f5e; }
-        #capture-area { background: #ffffff; padding: 40px 30px; border-radius: 24px; }
-        .report-header-row { display: flex; padding: 15px 0; border-bottom: 1.5px solid #f1f5f9; font-size: 11px; font-weight: 800; color: #94a3b8; text-transform: uppercase; }
-        .report-row { display: flex; align-items: center; padding: 16px 0; border-bottom: 1px solid #f8fafc; }
-        .col-name { flex: 1.2; text-align: left; }
-        .col-qty { flex: 1.5; display: flex; justify-content: center; }
-        .col-price { flex: 0.8; text-align: right; }
-        .qty-container { display: flex; align-items: center; width: 115px; justify-content: space-between; font-weight: 700; }
-        .qty-sold { color: #1e293b; font-weight: 800; font-size: 1.1rem; }
-        .summary-line { display: flex; justify-content: space-between; padding: 8px 0; font-weight: 600; font-size: 14px; color: #64748b; }
-        .summary-total { font-weight: 800; color: #1e293b; font-size: 18px; text-transform: uppercase; margin-top: 15px; }
+        
+        /* BÁO CÁO TỐI ƯU MOBILE */
+        #capture-area {
+            background: #ffffff;
+            padding: 30px 15px;
+            color: #1f2937;
+            min-width: 350px; /* Đảm bảo đủ không gian khi chụp ảnh */
+        }
+        .report-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .report-title {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #111827;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        /* Cấu trúc dòng Flex cố định kích thước */
+        .report-row {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f8fafc;
+        }
+        .report-header-row {
+            display: flex;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f1f5f9;
+            font-size: 10px;
+            font-weight: 700;
+            color: #9ca3af;
+            text-transform: uppercase;
+        }
+        
+        /* Độ rộng cố định cho từng cột để không bị dính chùm trên điện thoại */
+        .col-name { 
+            flex: 1; 
+            min-width: 0; /* Cho phép chữ bị cắt hoặc xuống dòng nếu quá dài */
+            padding-right: 5px;
+        }
+        .col-qty { 
+            width: 120px; /* Cố định chiều rộng cụm số lượng */
+            flex-shrink: 0;
+            display: flex; 
+            justify-content: center;
+        }
+        .col-price { 
+            width: 85px; /* Cố định chiều rộng cột tiền */
+            flex-shrink: 0;
+            text-align: right; 
+        }
+
+        /* Container số lượng căn chỉnh tuyệt đối */
+        .qty-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+        .qty-box {
+            width: 30px; 
+            text-align: center;
+            font-weight: 700;
+            font-size: 13px;
+        }
+        .qty-sep {
+            width: 10px;
+            text-align: center;
+            color: #e2e8f0;
+            font-size: 11px;
+        }
+        .qty-in { color: #94a3b8; }
+        .qty-sold { color: #111827; font-weight: 800; font-size: 14px; }
+        .qty-rem { color: #f97316; }
+
     </style>
 </head>
 <body class="p-4 md:p-8 flex justify-center">
@@ -236,4 +321,5 @@
         window.onload = init;
     </script>
 </body>
+
 </html>
