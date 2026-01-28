@@ -19,97 +19,123 @@
             border-radius: 20px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
         }
-        .btn-control {
-            color: white;
-            width: 32px;
-            height: 32px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            transition: all 0.2s;
-        }
-        .btn-plus { background-color: #10b981; }
-        .btn-minus { background-color: #f43f5e; }
         
-        /* BÁO CÁO TỐI ƯU MOBILE */
+        /* BÁO CÁO TỐI ƯU MOBILE - CHỐNG DÍNH CHỮ */
         #capture-area {
             background: #ffffff;
-            padding: 30px 15px;
+            padding: 35px 20px;
             color: #1f2937;
-            min-width: 350px; /* Đảm bảo đủ không gian khi chụp ảnh */
+            min-width: 360px;
         }
         .report-header {
             text-align: center;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
+            border-bottom: 1px dashed #e5e7eb;
+            padding-bottom: 20px;
         }
         .report-title {
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             font-weight: 800;
             color: #111827;
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
+        }
+        .report-info {
+            font-size: 0.95rem;
+            color: #6b7280;
+            font-style: italic;
         }
 
-        /* Cấu trúc dòng Flex cố định kích thước */
+        /* Cấu trúc dòng sản phẩm */
         .report-row {
             display: flex;
             align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid #f8fafc;
+            padding: 15px 0;
+            border-bottom: 1px solid #f1f5f9;
         }
         .report-header-row {
             display: flex;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #f1f5f9;
-            font-size: 10px;
+            padding: 15px 0 10px 0;
+            font-size: 11px;
             font-weight: 700;
             color: #9ca3af;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
-        /* Độ rộng cố định cho từng cột để không bị dính chùm trên điện thoại */
-        .col-name { 
-            flex: 1; 
-            min-width: 0; /* Cho phép chữ bị cắt hoặc xuống dòng nếu quá dài */
-            padding-right: 5px;
-        }
-        .col-qty { 
-            width: 120px; /* Cố định chiều rộng cụm số lượng */
-            flex-shrink: 0;
-            display: flex; 
-            justify-content: center;
-        }
-        .col-price { 
-            width: 85px; /* Cố định chiều rộng cột tiền */
-            flex-shrink: 0;
-            text-align: right; 
-        }
+        .col-name { flex: 1; min-width: 0; padding-right: 10px; }
+        .col-qty { width: 125px; flex-shrink: 0; display: flex; justify-content: center; }
+        .col-price { width: 95px; flex-shrink: 0; text-align: right; }
 
-        /* Container số lượng căn chỉnh tuyệt đối */
+        /* Cụm Nhập/Bán/Dư thẳng hàng tuyệt đối */
         .qty-container {
             display: flex;
             align-items: center;
             justify-content: space-between;
             width: 100%;
         }
-        .qty-box {
-            width: 30px; 
-            text-align: center;
-            font-weight: 700;
-            font-size: 13px;
-        }
-        .qty-sep {
-            width: 10px;
-            text-align: center;
-            color: #e2e8f0;
-            font-size: 11px;
-        }
-        .qty-in { color: #94a3b8; }
-        .qty-sold { color: #111827; font-weight: 800; font-size: 14px; }
+        .qty-box { width: 32px; text-align: center; font-weight: 700; font-size: 14px; }
+        .qty-sep { width: 12px; text-align: center; color: #cbd5e1; font-size: 12px; }
+        .qty-in { color: #94a3b8; font-weight: 500; }
+        .qty-sold { color: #111827; font-weight: 800; font-size: 15px; }
         .qty-rem { color: #f97316; }
+
+        /* Phần tổng kết - Sửa lỗi dính chữ */
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 0;
+        }
+        .summary-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #6b7280;
+        }
+        .summary-value {
+            font-size: 14px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-left: 20px; /* Tạo khoảng cách an toàn */
+        }
+        .summary-total-label {
+            font-size: 12px;
+            font-weight: 800;
+            color: #2563eb;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .summary-total-value {
+            font-size: 18px;
+            font-weight: 800;
+            color: #2563eb;
+        }
+
+        /* Khu vực tiền mặt cuối cùng nổi bật */
+        .final-cash-box {
+            margin-top: 25px;
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            text-align: center;
+        }
+        .final-cash-label {
+            display: block;
+            font-size: 10px;
+            font-weight: 800;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+        .final-cash-amount {
+            font-size: 32px;
+            font-weight: 900;
+            color: #059669; /* Màu xanh lá đậm chuyên nghiệp */
+            display: block;
+        }
 
     </style>
 </head>
@@ -323,3 +349,4 @@
 </body>
 
 </html>
+
