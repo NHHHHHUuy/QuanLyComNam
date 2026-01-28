@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Báo Cáo Doanh Thu Cơm Nấm</title>
+    <title>Báo Cáo Doanh Thu Cơm Nấm Pro</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
@@ -20,7 +20,6 @@
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
         }
         
-        /* BÁO CÁO TỐI ƯU MOBILE - CHỐNG DÍNH CHỮ */
         #capture-area {
             background: #ffffff;
             padding: 35px 20px;
@@ -41,34 +40,18 @@
             letter-spacing: 1px;
             margin-bottom: 6px;
         }
-        .report-info {
-            font-size: 0.95rem;
-            color: #6b7280;
-            font-style: italic;
-        }
 
-        /* Cấu trúc dòng sản phẩm */
         .report-row {
             display: flex;
             align-items: center;
-            padding: 15px 0;
+            padding: 12px 0;
             border-bottom: 1px solid #f1f5f9;
-        }
-        .report-header-row {
-            display: flex;
-            padding: 15px 0 10px 0;
-            font-size: 11px;
-            font-weight: 700;
-            color: #9ca3af;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
         
         .col-name { flex: 1; min-width: 0; padding-right: 10px; }
         .col-qty { width: 125px; flex-shrink: 0; display: flex; justify-content: center; }
         .col-price { width: 95px; flex-shrink: 0; text-align: right; }
 
-        /* Cụm Nhập/Bán/Dư thẳng hàng tuyệt đối */
         .qty-container {
             display: flex;
             align-items: center;
@@ -81,168 +64,141 @@
         .qty-sold { color: #111827; font-weight: 800; font-size: 15px; }
         .qty-rem { color: #f97316; }
 
-        /* Phần tổng kết - Sửa lỗi dính chữ */
         .summary-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 4px 0;
         }
-        .summary-label {
-            font-size: 13px;
-            font-weight: 600;
-            color: #6b7280;
-        }
         .summary-value {
-            font-size: 14px;
             font-weight: 700;
-            color: #1f2937;
-            margin-left: 20px; /* Tạo khoảng cách an toàn */
-        }
-        .summary-total-label {
-            font-size: 12px;
-            font-weight: 800;
-            color: #2563eb;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .summary-total-value {
-            font-size: 18px;
-            font-weight: 800;
-            color: #2563eb;
+            margin-left: 20px;
         }
 
-        /* Khu vực tiền mặt cuối cùng nổi bật */
         .final-cash-box {
             margin-top: 25px;
-            background: #f8fafc;
+            background: #f0fdf4;
             padding: 20px;
             border-radius: 16px;
-            border: 1px solid #e2e8f0;
+            border: 1px solid #dcfce7;
             text-align: center;
-        }
-        .final-cash-label {
-            display: block;
-            font-size: 10px;
-            font-weight: 800;
-            color: #64748b;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 8px;
         }
         .final-cash-amount {
             font-size: 32px;
             font-weight: 900;
-            color: #059669; /* Màu xanh lá đậm chuyên nghiệp */
+            color: #166534;
             display: block;
         }
-
     </style>
 </head>
-<body class="p-4 md:p-8 flex justify-center">
+<body class="p-4 md:p-8 flex justify-center pb-24">
     <div class="w-full max-w-lg">
         <div class="text-center mb-8">
             <h1 class="text-3xl font-bold text-gray-800 tracking-tight">CƠM NẤM <span class="text-orange-500">PRO</span></h1>
-            <p class="text-gray-400 text-sm">Hệ thống quản lý báo cáo chuyên nghiệp</p>
+            <p class="text-gray-400 text-sm">Quản lý bán hàng tinh gọn</p>
         </div>
 
         <!-- Nhập liệu -->
         <div class="card p-6 mb-6 space-y-4">
+            <h2 class="text-xs font-black text-gray-400 uppercase tracking-widest mb-2">Thông tin ca làm</h2>
             <div class="grid grid-cols-2 gap-4">
                 <div>
                     <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Chi nhánh</label>
-                    <input type="text" id="branch" onchange="saveData()" class="w-full p-3 border border-gray-100 bg-gray-50 rounded-xl outline-none" value="CN8">
+                    <input type="text" id="branch" oninput="saveCurrentState()" class="w-full p-3 border border-gray-100 bg-gray-50 rounded-xl outline-none" value="CN8">
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Buổi bán</label>
-                    <input type="text" id="shift" onchange="saveData()" class="w-full p-3 border border-gray-100 bg-gray-50 rounded-xl outline-none">
+                    <input type="text" id="shift" oninput="saveCurrentState()" class="w-full p-3 border border-gray-100 bg-gray-50 rounded-xl outline-none">
                 </div>
             </div>
             
             <div class="grid grid-cols-2 gap-4">
                 <div>
                     <label class="block text-xs font-bold text-blue-500 uppercase mb-1">Tiền két đầu (đ)</label>
-                    <input type="number" id="cashBox" onchange="saveData()" class="w-full p-3 border border-blue-50 bg-blue-50/30 rounded-xl font-bold text-blue-700 outline-none" value="260000">
+                    <input type="number" id="cashBox" oninput="saveCurrentState()" class="w-full p-3 border border-blue-50 bg-blue-50/30 rounded-xl font-bold text-blue-700 outline-none" value="260000">
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-purple-500 uppercase mb-1">Chuyển khoản (đ)</label>
-                    <input type="number" id="bankTransfer" onchange="saveData()" class="w-full p-3 border border-purple-50 bg-purple-50/30 rounded-xl font-bold text-purple-700 outline-none" value="0">
+                    <input type="number" id="bankTransfer" oninput="saveCurrentState()" class="w-full p-3 border border-purple-50 bg-purple-50/30 rounded-xl font-bold text-purple-700 outline-none" value="0">
                 </div>
             </div>
 
             <div>
                 <label class="block text-xs font-bold text-red-500 uppercase mb-1">Chi phí phát sinh (đ)</label>
-                <input type="number" id="totalExpense" onchange="saveData()" class="w-full p-3 border border-red-50 bg-red-50/30 rounded-xl font-bold text-red-700 outline-none" value="0">
+                <input type="number" id="totalExpense" oninput="saveCurrentState()" class="w-full p-3 border border-red-50 bg-red-50/30 rounded-xl font-bold text-red-700 outline-none" value="0">
             </div>
         </div>
 
         <!-- Danh sách nhập số lượng -->
         <div class="card p-6 mb-6">
-            <div class="flex justify-between items-center mb-4 border-b pb-2">
-                <h2 class="font-bold text-gray-800 uppercase text-xs">Điều chỉnh số lượng</h2>
-                <button onclick="clearData()" class="text-[10px] text-red-400 font-bold uppercase hover:text-red-600 transition-colors">Xóa sạch dữ liệu</button>
-            </div>
+            <h2 class="font-bold text-gray-800 uppercase text-xs mb-4 border-b pb-2">Số lượng bán hàng</h2>
             <div id="product-container" class="space-y-4"></div>
         </div>
 
-        <button onclick="calculate()" class="w-full bg-gray-900 text-white font-bold py-5 rounded-2xl shadow-xl active:scale-95 transition-all mb-10 text-lg">
-            XUẤT BÁO CÁO NGAY 📊
-        </button>
+        <!-- Cụm nút hành động -->
+        <div class="grid grid-cols-3 gap-3 mb-10">
+            <button onclick="calculateAndDisplay()" class="col-span-2 bg-gray-900 text-white font-bold py-5 rounded-2xl shadow-xl active:scale-95 transition-all text-lg">
+                XUẤT BÁO CÁO 📊
+            </button>
+            <button onclick="resetForNewDay()" class="col-span-1 bg-white border-2 border-red-100 text-red-500 font-bold py-5 rounded-2xl shadow-sm active:scale-95 transition-all text-sm uppercase">
+                Xóa dữ liệu
+            </button>
+        </div>
 
-        <!-- BÁO CÁO HIỂN THỊ ĐỂ CHỤP ẢNH -->
-        <div id="report-section" class="hidden">
-            <div id="capture-area" class="card shadow-none border border-gray-100">
+        <!-- BÁO CÁO HIỂN THỊ -->
+        <div id="report-section" class="hidden animate-in fade-in duration-500">
+            <div id="capture-area" class="card shadow-none border border-gray-100 mb-4">
                 <div class="report-header">
                     <h3 class="report-title">BÁO CÁO DOANH THU</h3>
-                    <div id="res-info" class="report-info"></div>
+                    <div id="res-info" class="report-info text-sm"></div>
                 </div>
                 
-                <div class="report-header-row">
-                    <div class="col-name">Món ăn</div>
-                    <div class="col-qty">Nhập / Bán / Dư</div>
-                    <div class="col-price">Thành tiền</div>
+                <div class="flex justify-between text-[10px] font-bold text-gray-400 uppercase mb-2 px-1">
+                    <span class="flex-1 text-left">Món</span>
+                    <span class="w-[125px] text-center">Nhập / Bán / Dư</span>
+                    <span class="w-[95px] text-right">Tiền</span>
                 </div>
 
                 <div id="res-body"></div>
 
                 <div class="mt-8 pt-6 border-t-2 border-gray-50 space-y-2">
                     <div class="summary-item">
-                        <span class="summary-total-label">Tổng doanh thu:</span>
-                        <span id="res-revenue" class="summary-total-value">0đ</span>
+                        <span class="text-xs font-bold text-blue-600 uppercase">Tổng doanh thu:</span>
+                        <span id="res-revenue" class="text-blue-600 font-black text-xl">0đ</span>
                     </div>
-                    <div class="summary-item">
-                        <span class="summary-label">Tiền két đầu buổi (+):</span>
+                    <div class="summary-item text-gray-500 text-sm">
+                        <span>Tiền két đầu buổi (+):</span>
                         <span id="res-cashbox-view" class="summary-value">0đ</span>
                     </div>
-                    <div class="summary-item">
-                        <span class="summary-label" style="color: #9333ea;">Chuyển khoản (-):</span>
-                        <span id="res-transfer" class="summary-value" style="color: #9333ea;">0đ</span>
+                    <div class="summary-item text-purple-600 text-sm">
+                        <span>Chuyển khoản (-):</span>
+                        <span id="res-transfer" class="summary-value">0đ</span>
                     </div>
-                    <div class="summary-item">
-                        <span class="summary-label" style="color: #ef4444;">Chi phí phát sinh (-):</span>
-                        <span id="res-expense" class="summary-value" style="color: #ef4444;">0đ</span>
+                    <div class="summary-item text-red-500 text-sm font-semibold">
+                        <span>Chi phí phát sinh (-):</span>
+                        <span id="res-expense" class="summary-value">0đ</span>
                     </div>
                     
                     <div class="final-cash-box">
-                        <span class="final-cash-label">Số tiền mặt thực thu</span>
+                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest block mb-1">Thực thu tiền mặt</span>
                         <span id="res-cash" class="final-cash-amount">0đ</span>
                     </div>
                 </div>
                 
                 <div class="mt-10 flex justify-between items-center text-[9px] text-gray-300 font-bold uppercase tracking-widest">
-                    <span>Hệ thống tự động Pro</span>
+                    <span>Cơm Nấm Pro v3.1</span>
                     <span id="res-time"></span>
                 </div>
             </div>
 
-            <button onclick="downloadImage()" class="mt-6 w-full bg-emerald-500 text-white font-bold py-5 rounded-xl shadow-lg mb-20 text-lg">
-                💾 TẢI ẢNH GỬI BÁO CÁO
+            <button onclick="downloadImage()" class="w-full bg-emerald-500 text-white font-bold py-5 rounded-xl shadow-lg mb-20 text-lg">
+                💾 TẢI ẢNH BÁO CÁO
             </button>
         </div>
     </div>
 
     <script>
-      const products = [
+        const products = [
             { id: "bo_ham", name: "Cơm nắm bò hầm 🥩", price: 23000 },
             { id: "ca_hoi", name: "Cơm nắm cá hồi 🍣", price: 22000 },
             { id: "ca_ngu", name: "Cơm nắm cá ngừ 🐟", price: 20000 },
@@ -258,9 +214,13 @@
             return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
         }
 
-        // Lưu dữ liệu vào LocalStorage
-        function saveData() {
-            const dataToSave = {
+        function formatMoney(num) {
+            return num.toLocaleString('vi-VN') + 'đ';
+        }
+
+        // Lưu trạng thái hiện tại vào localStorage
+        function saveCurrentState() {
+            const data = {
                 branch: document.getElementById('branch').value,
                 shift: document.getElementById('shift').value,
                 cashBox: document.getElementById('cashBox').value,
@@ -268,37 +228,45 @@
                 totalExpense: document.getElementById('totalExpense').value,
                 state: state
             };
-            localStorage.setItem('com_nam_pro_data', JSON.stringify(dataToSave));
+            localStorage.setItem('com_nam_current_v3', JSON.stringify(data));
         }
 
-        // Tải dữ liệu từ LocalStorage
-        function loadSavedData() {
-            const saved = localStorage.getItem('com_nam_pro_data');
-            if (saved) {
-                const data = JSON.parse(saved);
-                document.getElementById('branch').value = data.branch || "CN8";
-                document.getElementById('shift').value = data.shift || ("Sáng " + getToday());
-                document.getElementById('cashBox').value = data.cashBox || "260000";
-                document.getElementById('bankTransfer').value = data.bankTransfer || "0";
-                document.getElementById('totalExpense').value = data.totalExpense || "0";
-                state = data.state || {};
-            }
-        }
-
-        // Xóa sạch dữ liệu (Reset)
-        function clearData() {
-            if(confirm("Bạn có chắc chắn muốn xóa toàn bộ dữ liệu đang nhập không?")) {
-                localStorage.removeItem('com_nam_pro_data');
-                location.reload();
+        // Reset dữ liệu (Xóa sạch số lượng)
+        function resetForNewDay() {
+            const isConfirmed = confirm("Bạn có chắc chắn muốn XÓA HẾT số lượng đang nhập để bắt đầu ca mới không?");
+            if (isConfirmed) {
+                products.forEach(p => {
+                    state[p.id] = { stock: 0, sold: 0 };
+                });
+                // Xóa cả trong storage ngoại trừ tên chi nhánh nếu muốn giữ lại
+                const branch = document.getElementById('branch').value;
+                localStorage.removeItem('com_nam_current_v3');
+                
+                // Khởi tạo lại trạng thái mặc định
+                document.getElementById('shift').value = "Sáng " + getToday();
+                document.getElementById('bankTransfer').value = 0;
+                document.getElementById('totalExpense').value = 0;
+                
+                saveCurrentState();
+                location.reload(); // Tải lại trang để reset toàn bộ UI
             }
         }
 
         function init() {
-            loadSavedData(); // Tải dữ liệu trước khi vẽ giao diện
-            
+            // Tải trạng thái đã lưu
+            const savedCurrent = localStorage.getItem('com_nam_current_v3');
+            let currentData = {};
+            if(savedCurrent) currentData = JSON.parse(savedCurrent);
+
+            document.getElementById('branch').value = currentData.branch || "CN8";
+            document.getElementById('shift').value = currentData.shift || ("Sáng " + getToday());
+            document.getElementById('cashBox').value = currentData.cashBox || "260000";
+            document.getElementById('bankTransfer').value = currentData.bankTransfer || "0";
+            document.getElementById('totalExpense').value = currentData.totalExpense || "0";
+            state = currentData.state || {};
+
             const container = document.getElementById('product-container');
             products.forEach(p => {
-                // Nếu chưa có trong state từ localstorage thì khởi tạo mới
                 if (!state[p.id]) state[p.id] = { stock: 0, sold: 0 };
                 
                 const div = document.createElement('div');
@@ -312,7 +280,8 @@
                         <div class="flex flex-col items-center">
                            <span class="text-[8px] font-bold text-gray-400 uppercase mb-1">Nhập</span>
                            <input type="number" oninput="updateStock('${p.id}', this.value)" id="input-stock-${p.id}"
-                               class="w-10 p-1 text-center border-b-2 border-gray-200 focus:border-orange-400 outline-none font-bold text-sm bg-transparent" placeholder="0">
+                               class="w-10 p-1 text-center border-b-2 border-gray-200 focus:border-orange-400 outline-none font-bold text-sm bg-transparent" 
+                               value="${state[p.id].stock || ''}" placeholder="0">
                         </div>
                         <div class="flex flex-col items-center">
                             <span class="text-[8px] font-bold text-gray-400 uppercase mb-1">Bán</span>
@@ -325,39 +294,29 @@
                     </div>
                 `;
                 container.appendChild(div);
-                
-                // Điền giá trị đã lưu vào ô nhập
-                if(state[p.id].stock > 0) {
-                    document.getElementById(`input-stock-${p.id}`).value = state[p.id].stock;
-                }
             });
-
-            if(!document.getElementById('shift').value) {
-                document.getElementById('shift').value = "Sáng " + getToday();
-            }
         }
 
         function updateStock(id, val) { 
             state[id].stock = parseInt(val) || 0; 
-            saveData();
+            saveCurrentState();
         }
         
         function updateSold(id, delta) {
             state[id].sold = Math.max(0, state[id].sold + delta);
             document.getElementById(`sold-${id}`).innerText = state[id].sold;
-            saveData();
+            saveCurrentState();
         }
 
-        function formatMoney(num) {
-            return num.toLocaleString('vi-VN') + 'đ';
-        }
-
-        function calculate() {
-            let total = 0;
+        function calculateAndDisplay() {
+            let totalRevenue = 0;
             const resBody = document.getElementById('res-body');
+            const branch = document.getElementById('branch').value;
+            const shift = document.getElementById('shift').value;
             const cashBox = parseInt(document.getElementById('cashBox').value) || 0;
             const bank = parseInt(document.getElementById('bankTransfer').value) || 0;
             const exp = parseInt(document.getElementById('totalExpense').value) || 0;
+            const timeStr = new Date().toLocaleTimeString('vi-VN') + ' ' + getToday();
             
             resBody.innerHTML = '';
             
@@ -365,7 +324,7 @@
                 const { stock, sold } = state[p.id];
                 const remain = Math.max(0, stock - sold);
                 const subtotal = sold * p.price;
-                total += subtotal;
+                totalRevenue += subtotal;
 
                 if(stock > 0 || sold > 0) {
                     const row = document.createElement('div');
@@ -387,18 +346,18 @@
                 }
             });
 
-            document.getElementById('res-info').innerText = `${document.getElementById('branch').value} | ${document.getElementById('shift').value}`;
-            document.getElementById('res-revenue').innerText = formatMoney(total);
+            const finalCash = (totalRevenue + cashBox) - bank - exp;
+
+            document.getElementById('res-info').innerText = `${branch} | ${shift}`;
+            document.getElementById('res-revenue').innerText = formatMoney(totalRevenue);
             document.getElementById('res-cashbox-view').innerText = formatMoney(cashBox);
             document.getElementById('res-transfer').innerText = formatMoney(bank);
             document.getElementById('res-expense').innerText = formatMoney(exp);
-            document.getElementById('res-time').innerText = new Date().toLocaleTimeString('vi-VN') + ' ' + getToday();
-            
-            const final = (total + cashBox) - bank - exp;
-            document.getElementById('res-cash').innerText = formatMoney(final);
+            document.getElementById('res-time').innerText = timeStr;
+            document.getElementById('res-cash').innerText = formatMoney(finalCash);
 
             document.getElementById('report-section').classList.remove('hidden');
-            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+            window.scrollTo({ top: document.getElementById('report-section').offsetTop - 20, behavior: 'smooth' });
         }
 
         async function downloadImage() {
