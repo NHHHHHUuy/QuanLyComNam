@@ -151,34 +151,37 @@
             <div class="grid grid-cols-2 gap-4">
                 <div>
                     <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Chi nhánh</label>
-                    <input type="text" id="branch" class="w-full p-3 border border-gray-100 bg-gray-50 rounded-xl outline-none" value="CN8">
+                    <input type="text" id="branch" onchange="saveData()" class="w-full p-3 border border-gray-100 bg-gray-50 rounded-xl outline-none" value="CN8">
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Buổi bán</label>
-                    <input type="text" id="shift" class="w-full p-3 border border-gray-100 bg-gray-50 rounded-xl outline-none">
+                    <input type="text" id="shift" onchange="saveData()" class="w-full p-3 border border-gray-100 bg-gray-50 rounded-xl outline-none">
                 </div>
             </div>
             
             <div class="grid grid-cols-2 gap-4">
                 <div>
                     <label class="block text-xs font-bold text-blue-500 uppercase mb-1">Tiền két đầu (đ)</label>
-                    <input type="number" id="cashBox" class="w-full p-3 border border-blue-50 bg-blue-50/30 rounded-xl font-bold text-blue-700 outline-none" value="260000">
+                    <input type="number" id="cashBox" onchange="saveData()" class="w-full p-3 border border-blue-50 bg-blue-50/30 rounded-xl font-bold text-blue-700 outline-none" value="260000">
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-purple-500 uppercase mb-1">Chuyển khoản (đ)</label>
-                    <input type="number" id="bankTransfer" class="w-full p-3 border border-purple-50 bg-purple-50/30 rounded-xl font-bold text-purple-700 outline-none" value="0">
+                    <input type="number" id="bankTransfer" onchange="saveData()" class="w-full p-3 border border-purple-50 bg-purple-50/30 rounded-xl font-bold text-purple-700 outline-none" value="0">
                 </div>
             </div>
 
             <div>
                 <label class="block text-xs font-bold text-red-500 uppercase mb-1">Chi phí phát sinh (đ)</label>
-                <input type="number" id="totalExpense" class="w-full p-3 border border-red-50 bg-red-50/30 rounded-xl font-bold text-red-700 outline-none" value="0">
+                <input type="number" id="totalExpense" onchange="saveData()" class="w-full p-3 border border-red-50 bg-red-50/30 rounded-xl font-bold text-red-700 outline-none" value="0">
             </div>
         </div>
 
         <!-- Danh sách nhập số lượng -->
         <div class="card p-6 mb-6">
-            <h2 class="font-bold text-gray-800 uppercase text-xs mb-4 border-b pb-2">Điều chỉnh số lượng</h2>
+            <div class="flex justify-between items-center mb-4 border-b pb-2">
+                <h2 class="font-bold text-gray-800 uppercase text-xs">Điều chỉnh số lượng</h2>
+                <button onclick="clearData()" class="text-[10px] text-red-400 font-bold uppercase hover:text-red-600 transition-colors">Xóa sạch dữ liệu</button>
+            </div>
             <div id="product-container" class="space-y-4"></div>
         </div>
 
@@ -239,7 +242,7 @@
     </div>
 
     <script>
-        const products = [
+      const products = [
             { id: "bo_ham", name: "Cơm nắm bò hầm 🥩", price: 23000 },
             { id: "ca_hoi", name: "Cơm nắm cá hồi 🍣", price: 22000 },
             { id: "ca_ngu", name: "Cơm nắm cá ngừ 🐟", price: 20000 },
@@ -247,17 +250,57 @@
             { id: "ga_phomai", name: "Cơm nắm gà phô mai 🍗🧀", price: 22000 },
             { id: "trung_cha_bong", name: "Cơm nắm trứng chà bông 🥚", price: 16000 }
         ];
-        const state = {};
+
+        let state = {};
 
         function getToday() {
             const d = new Date();
             return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
         }
 
+        // Lưu dữ liệu vào LocalStorage
+        function saveData() {
+            const dataToSave = {
+                branch: document.getElementById('branch').value,
+                shift: document.getElementById('shift').value,
+                cashBox: document.getElementById('cashBox').value,
+                bankTransfer: document.getElementById('bankTransfer').value,
+                totalExpense: document.getElementById('totalExpense').value,
+                state: state
+            };
+            localStorage.setItem('com_nam_pro_data', JSON.stringify(dataToSave));
+        }
+
+        // Tải dữ liệu từ LocalStorage
+        function loadSavedData() {
+            const saved = localStorage.getItem('com_nam_pro_data');
+            if (saved) {
+                const data = JSON.parse(saved);
+                document.getElementById('branch').value = data.branch || "CN8";
+                document.getElementById('shift').value = data.shift || ("Sáng " + getToday());
+                document.getElementById('cashBox').value = data.cashBox || "260000";
+                document.getElementById('bankTransfer').value = data.bankTransfer || "0";
+                document.getElementById('totalExpense').value = data.totalExpense || "0";
+                state = data.state || {};
+            }
+        }
+
+        // Xóa sạch dữ liệu (Reset)
+        function clearData() {
+            if(confirm("Bạn có chắc chắn muốn xóa toàn bộ dữ liệu đang nhập không?")) {
+                localStorage.removeItem('com_nam_pro_data');
+                location.reload();
+            }
+        }
+
         function init() {
+            loadSavedData(); // Tải dữ liệu trước khi vẽ giao diện
+            
             const container = document.getElementById('product-container');
             products.forEach(p => {
-                state[p.id] = { stock: 0, sold: 0 };
+                // Nếu chưa có trong state từ localstorage thì khởi tạo mới
+                if (!state[p.id]) state[p.id] = { stock: 0, sold: 0 };
+                
                 const div = document.createElement('div');
                 div.className = "flex items-center justify-between bg-gray-50/50 p-3 rounded-xl border border-gray-50";
                 div.innerHTML = `
@@ -268,28 +311,41 @@
                     <div class="flex items-center gap-3">
                         <div class="flex flex-col items-center">
                            <span class="text-[8px] font-bold text-gray-400 uppercase mb-1">Nhập</span>
-                           <input type="number" oninput="updateStock('${p.id}', this.value)" 
+                           <input type="number" oninput="updateStock('${p.id}', this.value)" id="input-stock-${p.id}"
                                class="w-10 p-1 text-center border-b-2 border-gray-200 focus:border-orange-400 outline-none font-bold text-sm bg-transparent" placeholder="0">
                         </div>
                         <div class="flex flex-col items-center">
                             <span class="text-[8px] font-bold text-gray-400 uppercase mb-1">Bán</span>
                             <div class="flex items-center gap-2 bg-white p-1 rounded-lg shadow-sm border border-gray-100">
                                 <button onclick="updateSold('${p.id}', -1)" class="w-7 h-7 bg-red-500 text-white rounded-md font-bold">-</button>
-                                <span id="sold-${p.id}" class="w-5 text-center font-bold text-sm text-gray-700">0</span>
+                                <span id="sold-${p.id}" class="w-5 text-center font-bold text-sm text-gray-700">${state[p.id].sold}</span>
                                 <button onclick="updateSold('${p.id}', 1)" class="w-7 h-7 bg-emerald-500 text-white rounded-md font-bold">+</button>
                             </div>
                         </div>
                     </div>
                 `;
                 container.appendChild(div);
+                
+                // Điền giá trị đã lưu vào ô nhập
+                if(state[p.id].stock > 0) {
+                    document.getElementById(`input-stock-${p.id}`).value = state[p.id].stock;
+                }
             });
-            document.getElementById('shift').value = "Sáng " + getToday();
+
+            if(!document.getElementById('shift').value) {
+                document.getElementById('shift').value = "Sáng " + getToday();
+            }
         }
 
-        function updateStock(id, val) { state[id].stock = parseInt(val) || 0; }
+        function updateStock(id, val) { 
+            state[id].stock = parseInt(val) || 0; 
+            saveData();
+        }
+        
         function updateSold(id, delta) {
             state[id].sold = Math.max(0, state[id].sold + delta);
             document.getElementById(`sold-${id}`).innerText = state[id].sold;
+            saveData();
         }
 
         function formatMoney(num) {
